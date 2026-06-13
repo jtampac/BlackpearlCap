@@ -602,34 +602,6 @@ body::after {
   content: ""; position: absolute; inset: 0;
   background-image: repeating-linear-gradient(115deg, rgba(194,165,106,0.06) 0 1px, transparent 1px 9px);
   opacity: 0.6;
-}.founder__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  z-index: 2;
-}
-
-.founder__guilloche {
-  position: absolute;
-  width: 116%;
-  height: 116%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.08;
-  z-index: 3;
-  pointer-events: none;
-  animation: guillocheSpin 90s linear infinite;
-}
-
-.founder__frame {
-  position: absolute;
-  inset: 12px;
-  z-index: 4;
-  pointer-events: none;
 }
 .founder__mono {
   font-family: var(--serif); font-weight: 300;
@@ -1144,15 +1116,7 @@ body::after {
   opacity: 0.16; z-index: 0; pointer-events: none;
   animation: guillocheSpin 90s linear infinite;
 }
-@keyframes guillocheSpin {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}}
+@keyframes guillocheSpin { to { transform: rotate(360deg); } }
 .founder__frame { position: absolute; inset: 12px; z-index: 1; pointer-events: none; }
 .founder__frame::before, .founder__frame::after {
   content: ""; position: absolute; width: 22px; height: 22px; border: 1px solid var(--gold);
@@ -1381,4 +1345,96 @@ html { scrollbar-color: #2a2c30 #06080B; scrollbar-width: thin; }
 
 @media (prefers-reduced-motion: reduce) {
   .founder__guilloche { animation: none; transform: translate(-50%, -50%); }
+}
+
+/* ====================================================================
+   Manual final fixes — visual cleanup + founder portrait repair
+   ==================================================================== */
+
+/* Hide visual labels only; keep structure/data intact for scripts. */
+.pillar__k,
+.office__idx,
+.office__coords {
+  display: none !important;
+}
+
+/* Remove portfolio card numbering 01-07. */
+.pf-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Founder portrait: stable frame, real photo, centred rotating guilloche. */
+.founder__portrait {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  aspect-ratio: 4 / 5 !important;
+}
+
+.founder__media {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  display: block !important;
+}
+
+.founder__photo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  display: block !important;
+}
+
+.founder__mono {
+  display: none !important;
+}
+
+.founder__guilloche {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 132% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  transform: translate(-50%, -50%) rotate(0deg) !important;
+  transform-origin: 50% 50% !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  opacity: 0.22 !important;
+  mix-blend-mode: screen !important;
+  -webkit-mask-image: radial-gradient(circle at 50% 38%, transparent 0, transparent 24%, #000 58%, #000 100%) !important;
+          mask-image: radial-gradient(circle at 50% 38%, transparent 0, transparent 24%, #000 58%, #000 100%) !important;
+  animation: guillocheSpinFixed 100s linear infinite !important;
+}
+
+@keyframes guillocheSpinFixed {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.founder__frame {
+  position: absolute !important;
+  inset: 12px !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+}
+
+.founder__plate {
+  z-index: 4 !important;
+}
+
+@media (max-width: 760px) {
+  .founder__portrait {
+    max-width: 340px !important;
+    margin-inline: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .founder__guilloche {
+    animation: none !important;
+    transform: translate(-50%, -50%) rotate(0deg) !important;
+  }
 }
