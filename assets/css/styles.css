@@ -209,7 +209,7 @@ body::after {
   font-weight: 400;
   line-height: 1;
 }
-.brand__name span { color: var(--gold); }
+.brand__name .brand__accent { color: var(--gold); }
 .nav__links { display: flex; align-items: center; gap: clamp(1.1rem, 2vw, 2.1rem); }
 .nav__links a {
   font-family: var(--mono);
@@ -1036,27 +1036,29 @@ body::after {
    ==================================================================== */
 
 /* ---- Brand lockup ---- */
-.brand__div { width: 1px; height: 18px; background: var(--line); display: inline-block; margin: 0 0.1rem; }
-.brand__sub {
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.32em;
-  text-transform: uppercase; color: var(--muted); padding-left: 0.15rem;
-}
-@media (max-width: 520px) { .brand__div, .brand__sub { display: none; } }
+/* "Black Pearl Capital" is a single serif lockup; only "Pearl" carries the
+   champagne-gold accent. The old mono "CAPITAL" sub-label and divider were
+   removed so the full company name reads in one consistent style. */
 
 /* ---- Hero: coordinate rail + world-markets ticker ---- */
 .hero__rail {
-  position: absolute; right: clamp(1rem, 3vw, 2.4rem); top: 0; bottom: 0;
+  position: absolute; top: var(--nav-h); bottom: 7rem;
+  /* sit just inside the content gutter, never against the viewport edge /
+     scrollbar (always at least 1.5rem of clearance) */
+  right: max(1.5rem, calc((100% - var(--container)) / 2 - 0.75rem));
   display: flex; align-items: center; gap: 1.4rem; z-index: 0;
   writing-mode: vertical-rl; transform: rotate(180deg);
-  font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.28em;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.26em;
   text-transform: uppercase; color: var(--muted-2); pointer-events: none;
+  white-space: nowrap;
 }
 .hero__rail-mid { color: var(--gold); }
 .hero__ticker {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: 0.6rem 1.5rem;
-  padding: 1.1rem var(--pad-x);
+  /* full-bleed bar, but times + note align with the hero content column */
+  padding: 1.1rem max(var(--pad-x), calc((100% - var(--container)) / 2 + var(--pad-x)));
   border-top: 1px solid var(--line);
   background: linear-gradient(to top, rgba(7,9,12,0.85), transparent);
 }
@@ -1108,15 +1110,9 @@ body::after {
 .fcard h3 { margin-bottom: 0.6rem; }
 .fcard::after { background: linear-gradient(180deg, rgba(7,9,12,0.05) 0%, rgba(7,9,12,0.55) 45%, rgba(7,9,12,0.95) 100%); }
 
-/* ---- Founders: executive scale + guilloche + frame ---- */
+/* ---- Founders: executive scale + frame ---- */
 .founder { grid-template-columns: 0.92fr 1.08fr; }
 .founder__portrait { aspect-ratio: 4 / 5; }
-.founder__guilloche {
-  position: absolute; width: 116%; height: 116%; left: -8%; top: -8%;
-  opacity: 0.16; z-index: 0; pointer-events: none;
-  animation: guillocheSpin 90s linear infinite;
-}
-@keyframes guillocheSpin { to { transform: rotate(360deg); } }
 .founder__frame { position: absolute; inset: 12px; z-index: 1; pointer-events: none; }
 .founder__frame::before, .founder__frame::after {
   content: ""; position: absolute; width: 22px; height: 22px; border: 1px solid var(--gold);
@@ -1127,7 +1123,6 @@ body::after {
 .founder__mono { font-size: clamp(4.6rem, 11vw, 7.8rem); z-index: 2; }
 .founder__name { font-size: clamp(2.1rem, 3.9vw, 3.3rem); }
 .founder__role { font-size: 0.7rem; }
-@media (prefers-reduced-motion: reduce) { .founder__guilloche { animation: none; } }
 
 /* ---- Map: graticule + flow packets + signature choreography ---- */
 .map-grid line { stroke: rgba(120,140,170,0.07); stroke-width: 1; }
@@ -1237,18 +1232,9 @@ html { scrollbar-color: #2a2c30 #06080B; scrollbar-width: thin; }
 .office.is-active .office__idx, .office:hover .office__idx { color: var(--gold-bright); }
 .office.is-active .office__city, .office:hover .office__city { color: var(--gold-bright); }
 
-/* ---- Portfolio: quiet index, depth, sector accent ---- */
-.pf-grid { counter-reset: pf; }
-.pf-card { counter-increment: pf; transition: background 0.55s var(--ease), transform 0.55s var(--ease), box-shadow 0.55s var(--ease); }
-.pf-card::after {
-  content: counter(pf, decimal-leading-zero);
-  position: absolute; top: clamp(1.4rem, 2.2vw, 2rem); right: clamp(1.4rem, 2.2vw, 2rem);
-  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em;
-  color: var(--muted-2); opacity: 0.6; transition: color 0.55s var(--ease), opacity 0.55s var(--ease);
-}
-.pf-card--summary::after { content: none; }
+/* ---- Portfolio: depth + sector accent (numbering removed) ---- */
+.pf-card { transition: background 0.55s var(--ease), transform 0.55s var(--ease), box-shadow 0.55s var(--ease); }
 .pf-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px -34px rgba(0,0,0,0.9); }
-.pf-card:hover::after { color: var(--gold); opacity: 1; }
 .pf-card__sector { transition: color 0.5s var(--ease); }
 
 /* ---- Founders: standfirst lead + refined authority ---- */
@@ -1271,170 +1257,48 @@ html { scrollbar-color: #2a2c30 #06080B; scrollbar-width: thin; }
 }
 
 /* ====================================================================
-   Targeted fixes — remove numbering, re-balance office row,
-   centre founder guilloche
+   FINAL CLEANUP PASS — numbering removal, label hiding, office row,
+   founders (no guilloche). Single authoritative block; supersedes the
+   earlier conflicting overrides that were removed.
    ==================================================================== */
 
-/* 3. Remove portfolio numbering (was a CSS counter) */
+/* ---- Remove visual numbering (data left intact for any scripts) ---- */
+/* Portfolio cards: the index was a generated CSS counter — turn it off. */
+.pf-grid { counter-reset: none; }
 .pf-card::after { content: none; }
 
-/* 2. Office row now has no index — re-balance to two columns */
-.office { grid-template-columns: 1fr auto; }
+/* Investment-focus card numbers were removed from the markup; nothing to do. */
 
-/* 4. Founder guilloche — perfectly centred, square (no distortion),
-      smooth continuous rotation, behind the monogram, low opacity */
-.founder__guilloche {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 132%; height: auto; aspect-ratio: 1 / 1;
-  transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: 50% 50%;
-  opacity: 0.15;
-  z-index: 0;
-  pointer-events: none;
-  animation: guillocheSpin 90s linear infinite;
-}
-@keyframes guillocheSpin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .founder__guilloche { animation: none; transform: translate(-50%, -50%); }
+/* Hide label/index/coordinate chrome visually without touching structure. */
+.pillar__k,            /* "Pillar I" / "Pillar II" style kicker labels */
+.office__idx,          /* office list numbering */
+.office__coords {      /* office coordinate read-out */
+  display: none !important;
 }
 
-/* ====================================================================
-   Founder portrait — layered luxury security-print composition
-   Stack: frame background -> portrait media -> guilloche (overlap)
-   -> frame corners -> nameplate
-   ==================================================================== */
-.founder__portrait { position: relative; overflow: hidden; isolation: isolate; }
+/* Office row: no index/coords column any more — balance to a single column. */
+.office { grid-template-columns: 1fr; }
 
-/* portrait media — image fully fills frame; monogram is the fallback */
+/* ---- Founders: clean portrait, NO guilloche / rotating pattern ---- */
+.founder__portrait {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: 4 / 5;
+}
 .founder__media {
   position: absolute; inset: 0; z-index: 1;
-  display: flex; align-items: center; justify-content: center;
+  display: block;
 }
 .founder__photo {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 26%;
+  object-fit: cover; object-position: center top;
   display: block;
 }
-.founder__media:has(.founder__photo) .founder__mono { display: none; }
-.founder__mono { position: relative; z-index: 1; }
-
-/* guilloche — perfectly centred, circular, subtly overlapping the
-   portrait; denser at the border, clear over the centre (face) */
-.founder__guilloche {
-  position: absolute; top: 50%; left: 50%;
-  width: 128%; height: auto; aspect-ratio: 1 / 1;
-  transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: 50% 50%;
-  z-index: 2; pointer-events: none;
-  opacity: 0.28;
-  mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 31%, #000 64%, #000 100%);
-          mask-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 31%, #000 64%, #000 100%);
-  animation: guillocheSpin 100s linear infinite;
-}
-@keyframes guillocheSpin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
+.founder__mono { display: none; }      /* monogram fallback unused (photos present) */
 .founder__frame { z-index: 3; }
 .founder__plate { z-index: 4; }
 
-@media (prefers-reduced-motion: reduce) {
-  .founder__guilloche { animation: none; transform: translate(-50%, -50%); }
-}
-
-/* ====================================================================
-   Manual final fixes — visual cleanup + founder portrait repair
-   ==================================================================== */
-
-/* Hide visual labels only; keep structure/data intact for scripts. */
-.pillar__k,
-.office__idx,
-.office__coords {
-  display: none !important;
-}
-
-/* Remove portfolio card numbering 01-07. */
-.pf-card::after {
-  content: none !important;
-  display: none !important;
-}
-
-/* Founder portrait: stable frame, real photo, centred rotating guilloche. */
-.founder__portrait {
-  position: relative !important;
-  overflow: hidden !important;
-  isolation: isolate !important;
-  aspect-ratio: 4 / 5 !important;
-}
-
-.founder__media {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 1 !important;
-  display: block !important;
-}
-
-.founder__photo {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center top !important;
-  display: block !important;
-}
-
-.founder__mono {
-  display: none !important;
-}
-
-.founder__guilloche {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  width: 132% !important;
-  height: auto !important;
-  aspect-ratio: 1 / 1 !important;
-  transform: translate(-50%, -50%) rotate(0deg) !important;
-  transform-origin: 50% 50% !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-  opacity: 0.22 !important;
-  mix-blend-mode: screen !important;
-  -webkit-mask-image: radial-gradient(circle at 50% 38%, transparent 0, transparent 24%, #000 58%, #000 100%) !important;
-          mask-image: radial-gradient(circle at 50% 38%, transparent 0, transparent 24%, #000 58%, #000 100%) !important;
-  animation: guillocheSpinFixed 100s linear infinite !important;
-}
-
-@keyframes guillocheSpinFixed {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.founder__frame {
-  position: absolute !important;
-  inset: 12px !important;
-  z-index: 3 !important;
-  pointer-events: none !important;
-}
-
-.founder__plate {
-  z-index: 4 !important;
-}
-
 @media (max-width: 760px) {
-  .founder__portrait {
-    max-width: 340px !important;
-    margin-inline: auto !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .founder__guilloche {
-    animation: none !important;
-    transform: translate(-50%, -50%) rotate(0deg) !important;
-  }
+  .founder__portrait { max-width: 340px; margin-inline: auto; }
 }
