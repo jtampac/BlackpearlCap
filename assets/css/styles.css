@@ -1040,24 +1040,12 @@ body::after {
    champagne-gold accent. The old mono "CAPITAL" sub-label and divider were
    removed so the full company name reads in one consistent style. */
 
-/* ---- Hero: coordinate rail + world-markets ticker ---- */
-.hero__rail {
-  position: absolute; top: var(--nav-h); bottom: 6.5rem;
-  /* right edge aligns with the hero content column (same line as the
-     ticker note and the H1's right boundary); never touches the scrollbar */
-  right: max(var(--pad-x), calc((100% - var(--container)) / 2 + var(--pad-x)));
-  display: flex; align-items: center; gap: 1.4rem; z-index: 0;
-  writing-mode: vertical-rl; transform: rotate(180deg);
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.26em;
-  text-transform: uppercase; color: var(--muted-2); pointer-events: none;
-  white-space: nowrap;
-}
-.hero__rail-mid { color: var(--gold); }
+/* ---- Hero: world-markets clock ticker ---- */
 .hero__ticker {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: flex-start;
   flex-wrap: wrap; gap: 0.6rem 1.5rem;
-  /* full-bleed bar, but times + note align with the hero content column */
+  /* full-bleed bar, but clocks align with the hero content column */
   padding: 1.1rem max(var(--pad-x), calc((100% - var(--container)) / 2 + var(--pad-x)));
   border-top: 1px solid var(--line);
   background: linear-gradient(to top, rgba(7,9,12,0.85), transparent);
@@ -1069,21 +1057,13 @@ body::after {
 }
 .hero__city i { font-style: normal; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.62rem; }
 .hero__city b { font-weight: 500; color: var(--gold-bright); }
-.hero__ticker-note {
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--muted-2);
-}
-@media (max-width: 900px) { .hero__rail { display: none; } .hero__ticker-note { display: none; } }
 @media (max-width: 600px) { .hero__city:nth-child(2) { display: none; } }
 
-/* hero load choreography for new elements */
-.hero__rail, .hero__ticker { opacity: 0; transform: translateY(10px); }
-.hero__rail { transform: rotate(180deg) translateY(10px); }
-.is-loaded .hero__rail, .is-loaded .hero__ticker {
-  opacity: 1; transition: opacity 1.2s var(--ease) 1.3s, transform 1.2s var(--ease) 1.3s;
+/* hero load choreography */
+.hero__ticker { opacity: 0; transform: translateY(10px); }
+.is-loaded .hero__ticker {
+  opacity: 1; transform: none; transition: opacity 1.2s var(--ease) 1.3s, transform 1.2s var(--ease) 1.3s;
 }
-.is-loaded .hero__rail { transform: rotate(180deg); }
-.is-loaded .hero__ticker { transform: none; }
 
 /* ---- Statistics: key-figures ledger ---- */
 .stats__head {
