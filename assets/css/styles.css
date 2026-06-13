@@ -1042,10 +1042,10 @@ body::after {
 
 /* ---- Hero: coordinate rail + world-markets ticker ---- */
 .hero__rail {
-  position: absolute; top: var(--nav-h); bottom: 7rem;
-  /* sit just inside the content gutter, never against the viewport edge /
-     scrollbar (always at least 1.5rem of clearance) */
-  right: max(1.5rem, calc((100% - var(--container)) / 2 - 0.75rem));
+  position: absolute; top: var(--nav-h); bottom: 6.5rem;
+  /* right edge aligns with the hero content column (same line as the
+     ticker note and the H1's right boundary); never touches the scrollbar */
+  right: max(var(--pad-x), calc((100% - var(--container)) / 2 + var(--pad-x)));
   display: flex; align-items: center; gap: 1.4rem; z-index: 0;
   writing-mode: vertical-rl; transform: rotate(180deg);
   font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.26em;
